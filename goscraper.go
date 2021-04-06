@@ -3,14 +3,13 @@ package goscraper
 import (
 	"bytes"
 	"fmt"
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/charset"
 	"io"
 	"net/http"
 	"net/url"
 	"regexp"
 	"strings"
-
-	"golang.org/x/net/html"
-	"golang.org/x/net/html/charset"
 )
 
 var (
@@ -30,12 +29,13 @@ type Document struct {
 }
 
 type DocumentPreview struct {
-	Icon        string
-	Name        string
-	Title       string
-	Description string
-	Images      []string
-	Link        string
+	Icon          string
+	Name          string
+	Title         string
+	Description   string
+	Images        []string
+	Link          string
+	PublishedTime string
 }
 
 func Scrape(uri string, maxRedirect int) (*Document, error) {
@@ -231,6 +231,8 @@ func (scraper *Scraper) parseDocument(doc *Document) error {
 				}
 			}
 			switch cleanStr(property) {
+			case "og:article:published_time", "article:published_time":
+				doc.Preview.PublishedTime = content
 			case "og:site_name":
 				doc.Preview.Name = content
 			case "og:title":
@@ -257,7 +259,6 @@ func (scraper *Scraper) parseDocument(doc *Document) error {
 				}
 
 				doc.Preview.Images = []string{ogImgUrl.String()}
-
 			}
 
 		case "title":
