@@ -231,7 +231,7 @@ func (scraper *Scraper) parseDocument(doc *Document) error {
 				}
 			}
 			switch cleanStr(property) {
-			case "og:article:published_time", "article:published_time":
+			case "og:article:published_time", "article:published_time", "iso-8601-publish-date":
 				doc.Preview.PublishedTime = content
 			case "og:site_name":
 				doc.Preview.Name = content
