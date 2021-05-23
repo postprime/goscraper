@@ -1,4 +1,4 @@
-module github.com/postcash/goscraper
+module github.com/postprime/goscraper
 
 go 1.16
 
