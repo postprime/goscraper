@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+	"time"
 )
 
 var (
@@ -123,7 +124,8 @@ func (scraper *Scraper) getDocument() (*Document, error) {
 	}
 	req.Header.Add("User-Agent", "GoScraper")
 
-	resp, err := http.DefaultClient.Do(req)
+	c := http.Client{Timeout: 3 * time.Second}
+	resp, err := c.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
